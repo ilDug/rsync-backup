@@ -68,7 +68,8 @@ class Job():
             self.last_complete.write_text(str(self.date['last-complete']))
 
         if last_type == 'last-incremental':
-            self.last_incremental.write_text(str(self.date['last-complete']))
+            self.last_incremental.write_text(
+                str(self.date['last-incremental']))
     #############################################
     # calcola quanti giorni sono passati dakll'ultimo backup COMPLETO
 
