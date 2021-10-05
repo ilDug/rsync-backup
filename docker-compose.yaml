@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  backup:
+    # build: ./shop-api
+    image: ildug/rsync-backup:1.0.6
+    environment:
+      - SCHEDULE_HOUR=*
+      - SCHEDULE_MIN=*
+      - EMAIL=user@example.com
+      # INCREMENTAL:
+      # INCREMENTAL_COPIES:
+      # COMPLETE_COPIES:
+      # COMPLETE_FREQUENCY:
+      # EXCLUDE:
+      # INCLUDE:
+    volumes:
+      - ./src:/source
+      - ./dest:/destination
