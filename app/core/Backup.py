@@ -1,10 +1,10 @@
 # -*- coding: iso-8859-15 -*-
-from core.Job import Job
+from .job import Job
 from pathlib import Path, WindowsPath, PosixPath
 from datetime import datetime
 import os
 import shutil
-from core.backupErrors import BackUpError
+from .backup_errors import BackUpError
 
 
 class Backup(object):

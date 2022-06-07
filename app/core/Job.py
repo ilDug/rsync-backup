@@ -3,7 +3,7 @@ from pathlib import Path
 import json
 from datetime import datetime
 import shutil
-from core.backupErrors import JobError, JobWarning, BackUpError
+from .backup_errors import JobError, JobWarning, BackUpError
 from configs.conf import LAST_COMPLETE, LAST_INCREMENTAL, SOURCE, DESTINATION, INCREMENTAL, INCREMENTAL_COPIES, COMPLETE_COPIES, COMPLETE_FREQUENCY, LOG, EMAIL, EXCLUDE, INCLUDE
 
 
