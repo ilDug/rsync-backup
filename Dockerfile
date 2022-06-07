@@ -1,5 +1,5 @@
-FROM python:3.9-buster
-LABEL version="1.0.6"
+FROM python:3.10-bullseye
+LABEL version="1.1.0"
 LABEL git="ilDug/rsync-backup"
 
 
@@ -26,29 +26,17 @@ VOLUME /destination
 WORKDIR /app
 
 COPY ./app/requirements.txt ./requirements.txt
-
 RUN python3 -m pip install --no-cache-dir -r requirements.txt
 
 COPY ./app .
 
-# Add crontab file in the cron directory
-ADD ./backup-crontab /etc/cron.d/bu-cron
-
-# Give execution rights on the cron job
-RUN chmod 0777 /etc/cron.d/bu-cron
-
-# Apply cron job
-RUN crontab /etc/cron.d/bu-cron
-
-# Create the log file to be able to run tail
-RUN touch /var/log/cron.log
-
-# Run the command on container startup
+# # Run the command on container startup
 ENTRYPOINT sh /app/init.sh
 
-
+# CMD ["cron", "&&", "tail", "-f", "/var/log/cron.log"]
+# CMD cron && tail -f /var/log/cron.log
 
 # !!!!!!!!!! MODIFICARE AD OGNI CAMBIAMENTO
-# docker build  -t ildug/rsync-backup:1.0.6 .
-# docker push ildug/rsync-backup:1.0.6
-#docker run -i -t -v ./src:/source -v ./dest:/destination -e EMAIL=mdognini@eurokemical.it rsync-backup:1.0.6
+# docker build  -t ildug/rsync-backup:1.1.0 .
+# docker push ildug/rsync-backup:1.1.0
+# docker run -i -t -v ./s:/source -v ./s:/destination -e EMAIL=mdognini@eurokemical.it rsync-backup:1.1.0

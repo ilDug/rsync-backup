@@ -10,6 +10,7 @@ docker run  \
     -v ./src:/source \
     -v ./dest:/destination \
     -e EMAIL=user@example.com \
+    - e SCHEDULE_MIN=* \
     rsync-backup
 ```
 
@@ -21,7 +22,7 @@ version: "3.9"
 
 services:
   backup:
-    image: ildug/rsync-backup:1.0.6
+    image: ildug/rsync-backup:1.1.0
     environment:
       - SCHEDULE_HOUR=* # crontab value for minutes
       - SCHEDULE_MIN=* # crontab value for hours
