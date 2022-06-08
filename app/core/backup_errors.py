@@ -1,5 +1,4 @@
 class JobError(Exception):
-
     def __init__(self, message):
         self.message = message
 
@@ -8,7 +7,6 @@ class JobError(Exception):
 
 
 class JobWarning(Warning):
-
     def __init__(self, message):
         self.message = message
 
@@ -17,7 +15,6 @@ class JobWarning(Warning):
 
 
 class BackUpError(Exception):
-
     def __init__(self, message):
         self.message = message
 

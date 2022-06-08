@@ -11,6 +11,7 @@ class Backup(object):
     """
     classe che esegue il backup e la gestione delle cartelle di un particolare JOB
     """
+
     job: Job
 
     def __init__(self, job: Job):
@@ -23,8 +24,8 @@ class Backup(object):
     def setup_folders(self):
         # se non c'  la cartella current la crea
         destination = self.job.destination
-        if not (destination / 'current').exists():
-            (destination / 'current').mkdir()
+        if not (destination / "current").exists():
+            (destination / "current").mkdir()
             print("creata cartella current")
 
     # rsync options
@@ -32,12 +33,19 @@ class Backup(object):
     def options(self):
         destination = self.job.destination
         suffix = "{:%Y.%m.%d-%H.%M.%S}".format(datetime.now())
-        incremental = destination.joinpath('incremental-' + suffix)
+        incremental = destination.joinpath("incremental-" + suffix)
         logfile = destination / "rsync.log' "
-        options = "--force --ignore-errors --delete " + \
-            " --backup --backup-dir='" + str(incremental) + \
-            "' -a -v --perms --chmod=777 " + self.inclusions() + self.exclusions() + \
-            " --log-file='" + str(logfile) + " "
+        options = (
+            "--force --ignore-errors --delete "
+            + " --backup --backup-dir='"
+            + str(incremental)
+            + "' -a -v --perms --chmod=777 "
+            + self.inclusions()
+            + self.exclusions()
+            + " --log-file='"
+            + str(logfile)
+            + " "
+        )
         return options
 
     def exclusions(self):
@@ -55,15 +63,23 @@ class Backup(object):
         return option
 
     def command(self):
-        destination = self.job.destination / 'current'
+        destination = self.job.destination / "current"
         if isinstance(destination, WindowsPath):
-            destination = "/" + str(destination.as_posix()).replace(':', '')
+            destination = "/" + str(destination.as_posix()).replace(":", "")
 
         source = self.job.source
         if isinstance(source, WindowsPath):
-            source = "/" + str(source.as_posix()).replace(':', '')
+            source = "/" + str(source.as_posix()).replace(":", "")
 
-        return "rsync " + self.options() + " '" + str(source) + "/' '" + str(destination) + "' "
+        return (
+            "rsync "
+            + self.options()
+            + " '"
+            + str(source)
+            + "/' '"
+            + str(destination)
+            + "' "
+        )
 
     def run(self):
         try:
@@ -73,7 +89,8 @@ class Backup(object):
                 raise Exception("rsync error durante il run del backup")
         except Exception as err:
             raise BackUpError(
-                f"Errore nell'esecuzione del comando rsync: \n      il Job non e` stato eseguito \n       Errore: {err}\n\n")
+                f"Errore nell'esecuzione del comando rsync: \n      il Job non e` stato eseguito \n       Errore: {err}\n\n"
+            )
         self.job.set_backup_timedate(type="incremental")
 
     #############################################
@@ -84,8 +101,7 @@ class Backup(object):
         folder = self.job.destination
 
         # recupera la lista di cartelle che contengono nel nome "incremental"
-        incrementals = [inc for inc in folder.glob('incremental*')
-                        if inc.is_dir()]
+        incrementals = [inc for inc in folder.glob("incremental*") if inc.is_dir()]
         incrementals.sort()
         counter = 0
         while len(incrementals) > max_copies:
@@ -103,8 +119,9 @@ class Backup(object):
         folder = self.job.destination
 
         # recupera la lista di cartelle che contengono nel nome "incremental"
-        completes = [complete for complete in folder.glob('complete*')
-                     if complete.is_dir()]
+        completes = [
+            complete for complete in folder.glob("complete*") if complete.is_dir()
+        ]
         completes.sort()
         counter = 0
         while len(completes) > max_copies:
@@ -121,19 +138,24 @@ class Backup(object):
         suffix = "{:%Y.%m.%d-%H.%M.%S}".format(datetime.now())
         folder = self.job.destination
 
-        current = folder.joinpath('current')
+        current = folder.joinpath("current")
         if isinstance(current, WindowsPath):
-            current = "/" + str(current.as_posix()).replace(':', '')
+            current = "/" + str(current.as_posix()).replace(":", "")
 
-        complete = folder.joinpath('complete-' + suffix)
+        complete = folder.joinpath("complete-" + suffix)
         if isinstance(complete, WindowsPath):
-            complete = "/" + str(complete.as_posix()).replace(':', '')
+            complete = "/" + str(complete.as_posix()).replace(":", "")
 
         if self.job.days_since_last_backup() < self.job.complete_frequency:
             return
         else:
             print("creazione nuova copia completa")
-            command = "rsync --force --ignore-errors -a -v '" + \
-                str(current) + "/' '" + str(complete) + "' "
+            command = (
+                "rsync --force --ignore-errors -a -v '"
+                + str(current)
+                + "/' '"
+                + str(complete)
+                + "' "
+            )
             os.system(command)
             self.job.set_backup_timedate()

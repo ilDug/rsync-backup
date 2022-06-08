@@ -1,48 +1,51 @@
 import os
 from pathlib import Path
 from datetime import datetime
+from string import Template
+from .mail import DagMail, DagMailConfig
+from configs.conf import MAIL_CONFIG
 
 
-# class Notifier():
-#     """
-#     classe che invia le email di notifica
-#     """
+class Notifier:
+    """
+    classe che invia le email di notifica
+    """
 
-#     def __init__(self):
-#         self.sender = ""
-#         self.recipient = ""
-#         self.header = ""
-#         self.message = ""
+    def __init__(self):
+        self.sender = ""
+        self.recipient = ""
+        self.header = ""
+        self.message = ""
 
-#     def to_address(self, address):
-#         self.recipient = address
-#         return self
+    def to_address(self, address):
+        self.recipient = address
+        return self
 
-#     def from_address(self, address):
-#         self.sender = address
-#         return self
+    # def from_address(self, address):
+    #     self.sender = address
+    #     return self
 
-#     def subject(self, text):
-#         self.header = text
-#         return self
+    def subject(self, text):
+        self.header = text
+        return self
 
-#     def body(self, msg):
-#         self.message = msg
-#         return self
+    def body(self, msg):
+        self.message = msg
+        return self
 
-#     def send(self):
-#         temp = Path("src/temp/temp.txt")
-#         mail = [
-#             f"To: {self.recipient}\n",
-#             f"From: {self.sender}\n",
-#             f"Subject: {self.header}\n"
-#             "\n",
-#             self.message + "\n",
-#             str(datetime.now())
+    def send(self) -> bool:
+        """
+        manda la email cn il codice di attivazione edell'account
 
-#         ]
-#         with open(temp, 'w') as f:
-#                 f.writelines(mail)
-
-#         command = f"sendmail {self.recipient} < {str(temp)}"
-#         os.system(command)
+        @return boolean se la mail è stata invata
+        """
+        try:
+            config = DagMailConfig(**MAIL_CONFIG)
+            with DagMail(config) as ms:
+                ms.add_receiver(self.recipient)
+                ms.messageHTML(self.message, self.subject)
+                ms.send()
+                return True
+        except Exception as e:
+            print(str(e))
+            return False
