@@ -5,15 +5,15 @@ services:
     # build: ./shop-api
     image: ildug/rsync-backup:1.0.6
     environment:
-      - SCHEDULE_HOUR=12
-      - SCHEDULE_MIN=0
-      - EMAIL=user@example.com
-      # INCREMENTAL:True
-      # INCREMENTAL_COPIES:7
-      # COMPLETE_COPIES:8
-      # COMPLETE_FREQUENCY:8
-      # EXCLUDE:node_modules,env
-      # INCLUDE:,
+      - SCHEDULE_HOUR=*
+      - SCHEDULE_MIN=*
+      - EMAIL=marco.dognini@dagtech.it
+      - INCREMENTAL_COPIES:2
+      - COMPLETE_COPIES:2
+      - COMPLETE_FREQUENCY:2
+    #   - INCREMENTAL:True
+    #   - EXCLUDE:node_modules,env
+    #   - INCLUDE:,
     volumes:
       - ./s:/source
       - ./d:/destination

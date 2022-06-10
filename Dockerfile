@@ -40,3 +40,4 @@ ENTRYPOINT sh /app/init.sh
 # docker build  -t ildug/rsync-backup:1.1.0 .
 # docker push ildug/rsync-backup:1.1.0
 # docker run -i -t -v ./s:/source -v ./s:/destination -e EMAIL=mdognini@eurokemical.it rsync-backup:1.1.0
+

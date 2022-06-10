@@ -39,6 +39,9 @@ pip-delete-this-directory.txt
 
 s/
 d/
+app/source/
+app/destination/
+
 # Unit test / coverage reports
 htmlcov/
 .tox/

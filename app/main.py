@@ -10,6 +10,7 @@ from configs.conf import ERROR_LOG
 def main():
     err_msg = None
     try:
+        # verifiche iniziali sul job
         job = Job()
         bu = Backup(job)
         bu.run()
@@ -35,7 +36,7 @@ def main():
     finally:
         if err_msg is not None:
             print("error trovati: ", err_msg)
-            with Path(ERROR_LOG).open('a') as f:
+            with Path(ERROR_LOG).open("a") as f:
                 f.write(str(datetime.now()))
                 f.write("   ")
                 f.write(err_msg)
@@ -53,5 +54,5 @@ def main():
 
 
 if __name__ == "__main__":
-    # main()
-    print("jellyfish")
+    main()
+    # print("jellyfish")

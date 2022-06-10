@@ -5,7 +5,7 @@ touch /var/log/cron.log
 touch /etc/cron.d/back-up-cron
 chmod 0777 /etc/cron.d/back-up-cron
 
-echo "$SCHEDULE_MIN $SCHEDULE_HOUR * * 1-6 /usr/local/bin/python3.10  /app/main.py >> /var/log/cron.log 2>&1" > /etc/cron.d/back-up-cron
+echo "$SCHEDULE_MIN $SCHEDULE_HOUR * * * /usr/local/bin/python3.10  /app/main.py >> /var/log/cron.log 2>&1" > /etc/cron.d/back-up-cron
 
 echo "# An empty line is required at the end of this file for a valid cron file." >> /etc/cron.d/back-up-cron 
 

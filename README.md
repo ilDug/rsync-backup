@@ -1,7 +1,7 @@
 # rsync-backup
 schedule backup with docker container
 
-It run every days (based on cron schedule)
+It run daily (based on cron schedule)
 
 ## usage
 
@@ -11,6 +11,7 @@ docker run  \
     -v ./dest:/destination \
     -e EMAIL=user@example.com \
     - e SCHEDULE_MIN=* \
+    - e SCHEDULE_HOUR=* \
     rsync-backup
 ```
 
@@ -22,20 +23,21 @@ version: "3.9"
 
 services:
   backup:
-    image: ildug/rsync-backup:1.1.0
+    # build: ./shop-api
+    image: ildug/rsync-backup:1.0.6
     environment:
-      - SCHEDULE_HOUR=* # crontab value for minutes
-      - SCHEDULE_MIN=* # crontab value for hours
-      - EMAIL=user@example.com
-      # INCREMENTAL:true
-      # INCREMENTAL_COPIES:7
-      # COMPLETE_COPIES:7
-      # COMPLETE_FREQUENCY:8
-      # EXCLUDE:[node_modules, env]
-      # INCLUDE:[...]
+      - SCHEDULE_HOUR=*
+      - SCHEDULE_MIN=*
+      - EMAIL=marco.dognini@dagtech.it
+      - INCREMENTAL_COPIES:2
+      - COMPLETE_COPIES:2
+      - COMPLETE_FREQUENCY:2
+    #   - INCREMENTAL:True
+    #   - EXCLUDE:node_modules,env
+    #   - INCLUDE:,
     volumes:
-      - ./src:/source
-      - ./dest:/destination
+      - ./s:/source
+      - ./d:/destination
 
 ```
 
